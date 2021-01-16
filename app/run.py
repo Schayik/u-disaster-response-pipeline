@@ -37,15 +37,29 @@ model = joblib.load("../models/classifier.pkl")
 @app.route('/')
 @app.route('/index')
 def index():
+    # Data for Pie Chart that shows the occurrance of each category
+    remove = ['id', 'message', 'original', 'genre']
+    category_columns = [x for x in df.columns.values if x not in remove]
+    series = (df[category_columns] == 1).sum()
     
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
+        {
+            'data': [
+                {
+                    'values': series.values,
+                    'labels': series.index.values,
+                    'type': 'pie',
+                }
+            ],
+            'layout': {
+                'title': 'Occurance of each category',
+            }
+        },
         {
             'data': [
                 Bar(
