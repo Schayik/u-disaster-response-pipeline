@@ -9,9 +9,10 @@ This is project from the Udacity Data Scientist course which to improve my data 
 
 ### Setup:
 1. Clone project `git clone https://github.com/Schayik/u-disaster-response-pipeline.git`
-2. Create virtual environment: `python -m venv .venv`
-3. Activate virtual environment: `.venv/Scripts/activate`
-4. Install dependencies: `pip install -r requirements.txt`
+2. Enter project `cd u-disaster-response-pipeline`
+3. Create virtual environment: `python -m venv .venv`
+4. Activate virtual environment: `.venv/Scripts/activate`
+5. Install dependencies: `pip install -r requirements.txt`
 
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
