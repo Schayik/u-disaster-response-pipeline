@@ -27,3 +27,4 @@ This is project from the Udacity Data Scientist course which to improve my data 
 3. Go to http://0.0.0.0:3001/
 
 **Note**: I had memory issues which were resolved by using Python 3.9 64bit instead of Python 3.8 32bit. This article was very helpful: https://stackoverflow.com/questions/57507832/unable-to-allocate-array-with-shape-and-data-type
+**Note**: Going to http://0.0.0.0:3001/ didn't work for me, but http://127.0.0.1:3001/ did.
