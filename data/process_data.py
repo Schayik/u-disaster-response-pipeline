@@ -10,6 +10,12 @@ def load_data(messages_filepath, categories_filepath):
     return df
 
 
+"""
+This function takes the pandas data frame and applies the following:
+1. Turns the category column into separate columns for each category with appropriate titles
+2. Turns the data values into binary numbers, dropping the non-binary ones
+3. Drops duplicate rows
+"""
 def clean_data(df):
     categories = df['categories'].str.split(pat=';', expand=True)
     row = categories.iloc[0]

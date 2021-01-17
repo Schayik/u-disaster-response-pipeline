@@ -28,6 +28,10 @@ def load_data(database_filepath):
     return X, Y, category_names
 
 
+"""
+First, the text is cleaned by removes symbols, using lowercase, and removing double spaces.
+Then, the text is tokenized, stopwords are removed, and finally, the tokens are lemmatized.
+"""
 def tokenize(text):
     normalized = re.sub(r"[^a-zA-Z0-9]", " ", text).lower().strip()
     tokenized = word_tokenize(normalized)
@@ -44,6 +48,10 @@ def tokenize(text):
     return clean_tokens
 
 
+"""
+Describes the model used on the data, consisting of NLP transformers and
+an individual classifier of each category.
+"""
 def build_model():
     model = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
@@ -54,6 +62,9 @@ def build_model():
     return model
 
 
+"""
+Shows the accuracy, precision, and recall of the model on each category.
+"""
 def evaluate_model(model, X_test, Y_test, category_names):
     Y_pred = model.predict(X_test)
     Y_pred_df = pd.DataFrame(Y_pred, columns=category_names)
