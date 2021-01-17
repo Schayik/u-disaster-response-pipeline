@@ -25,6 +25,13 @@ def clean_data(df):
 
     df.drop_duplicates(inplace=True)
 
+    non_binary_indices = set()
+    for colname in category_colnames:
+        series = df[colname]
+        indices = series[series > 1].index.values
+        non_binary_indices.update(set(indices))
+    df.drop(non_binary_indices, inplace=True)
+
     return df
 
 
