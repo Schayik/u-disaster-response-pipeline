@@ -4,19 +4,20 @@ from sqlalchemy import create_engine
 
 
 def load_data(messages_filepath, categories_filepath):
+    """Loads the message and category data and returns the merged data."""
+
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     df = messages.merge(categories)
     return df
 
 
-"""
-This function takes the pandas data frame and applies the following:
-1. Turns the category column into separate columns for each category with appropriate titles
-2. Turns the data values into binary numbers, dropping the non-binary ones
-3. Drops duplicate rows
-"""
 def clean_data(df):
+    """This function takes the pandas data frame and applies the following:
+    1. Turns the category column into separate columns for each category with appropriate titles
+    2. Turns the data values into binary numbers, dropping the non-binary ones
+    3. Drops duplicate rows"""
+
     categories = df['categories'].str.split(pat=';', expand=True)
     row = categories.iloc[0]
     category_colnames = list(map(lambda col: col[:-2], row.values))
@@ -42,6 +43,8 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
+    """Saves the data as a database file"""
+
     engine = create_engine(f'sqlite:///{database_filename}')
     df.to_sql('messages', engine, index=False, if_exists='replace')
 

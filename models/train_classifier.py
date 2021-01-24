@@ -19,6 +19,8 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 
 
 def load_data(database_filepath):
+    """Loads the data from a database file and returns the target and category data set."""
+
     engine = create_engine(f'sqlite:///{database_filepath}')
     df = pd.read_sql_table('messages', engine)
     X = df['message']
@@ -28,11 +30,10 @@ def load_data(database_filepath):
     return X, Y, category_names
 
 
-"""
-First, the text is cleaned by removes symbols, using lowercase, and removing double spaces.
-Then, the text is tokenized, stopwords are removed, and finally, the tokens are lemmatized.
-"""
 def tokenize(text):
+    """First, the text is cleaned by removes symbols, using lowercase, and removing double spaces.
+    Then, the text is tokenized, stopwords are removed, and finally, the tokens are lemmatized."""
+
     normalized = re.sub(r"[^a-zA-Z0-9]", " ", text).lower().strip()
     tokenized = word_tokenize(normalized)
     without_stop_words = [
@@ -48,11 +49,10 @@ def tokenize(text):
     return clean_tokens
 
 
-"""
-Describes the model used on the data, consisting of NLP transformers and
-an individual classifier of each category.
-"""
 def build_model():
+    """Describes the model used on the data, consisting of NLP transformers and
+    an individual classifier of each category."""
+
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
@@ -70,10 +70,8 @@ def build_model():
     return model
 
 
-"""
-Shows the accuracy, precision, and recall of the model on each category.
-"""
 def evaluate_model(model, X_test, Y_test, category_names):
+    """Shows the accuracy, precision, and recall of the model on each category."""
     Y_pred = model.predict(X_test)
     Y_pred_df = pd.DataFrame(Y_pred, columns=category_names)
 
@@ -85,6 +83,8 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    """Saves the model as a pickle file"""
+
     with open(model_filepath, 'wb') as file:
         pickle.dump(model, file)
 
