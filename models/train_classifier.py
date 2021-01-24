@@ -70,13 +70,9 @@ def build_model():
 
 def evaluate_model(model, X_test, Y_test, category_names):
     """Shows the accuracy, precision, and recall of the model on each category."""
+
     Y_pred = model.predict(X_test)
-    Y_pred_df = pd.DataFrame(Y_pred, columns=category_names)
-
-    for column in Y_test.columns:
-        print(column)
-        print(classification_report(Y_test[column], Y_pred_df[column]))
-
+    print(classification_report(Y_test, Y_pred, target_names=category_names))
     print(model.best_params_)
 
 
