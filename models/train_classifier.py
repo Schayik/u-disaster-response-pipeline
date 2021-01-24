@@ -14,7 +14,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.multioutput import MultiOutputClassifier
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 
 
@@ -56,13 +56,11 @@ def build_model():
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
-        ('clf', MultiOutputClassifier(KNeighborsClassifier()))
+        ('clf', MultiOutputClassifier(RandomForestClassifier(n_estimators=10))),
     ])
 
     parameters = {
-        'clf__estimator__weights': ['uniform', 'distance'],
-        'clf__estimator__n_neighbors': [2, 5, 8],
-        'clf__estimator__leaf_size': [10, 20],
+        'clf__estimator__criterion': ['gini', 'entropy'],
     }
 
     model = GridSearchCV(pipeline, param_grid=parameters)
