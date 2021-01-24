@@ -12,7 +12,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import classification_report
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
@@ -53,11 +53,19 @@ Describes the model used on the data, consisting of NLP transformers and
 an individual classifier of each category.
 """
 def build_model():
-    model = Pipeline([
+    pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
         ('clf', MultiOutputClassifier(KNeighborsClassifier()))
     ])
+
+    parameters = {
+        'clf__estimator__weights': ['uniform', 'distance'],
+        'clf__estimator__n_neighbors': [2, 5, 8],
+        'clf__estimator__leaf_size': [10, 20],
+    }
+
+    model = GridSearchCV(pipeline, param_grid=parameters)
 
     return model
 
@@ -72,6 +80,8 @@ def evaluate_model(model, X_test, Y_test, category_names):
     for column in Y_test.columns:
         print(column)
         print(classification_report(Y_test[column], Y_pred_df[column]))
+
+    print(model.best_params_)
 
 
 def save_model(model, model_filepath):
